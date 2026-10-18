@@ -10,7 +10,7 @@ const FLOATING = [
   { left: '80%', delay: '0.15s', size: 'h-4 w-4' },
 ]
 
-export function SuccessView({ onReset }: { onReset: () => void }) {
+export function SuccessView({ couponCode, onReset }: { couponCode: string; onReset: () => void }) {
   const headingRef = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function SuccessView({ onReset }: { onReset: () => void }) {
 
   return (
     <div className="relative mt-4 overflow-hidden rounded-3xl bg-paper px-6 pt-16 pb-10 text-center shadow-soft">
-      <div className="pointer-events-none absolute inset-x-0 bottom-24 h-0" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-x-0 top-40 h-0" aria-hidden="true">
         {FLOATING.map((h, i) => (
           <span key={i} className="float-heart absolute text-love" style={{ left: h.left, animationDelay: h.delay }}>
             <Heart className={h.size} filled />
@@ -34,7 +34,7 @@ export function SuccessView({ onReset }: { onReset: () => void }) {
       <p className="mt-3">소중한 이야기 들려주셔서 감사합니다.</p>
       <p className="mt-6 font-title text-xl text-love">LET'S GO TOGETHER</p>
 
-      <GiftVoucher />
+      <GiftVoucher code={couponCode} />
 
       <button
         type="button"

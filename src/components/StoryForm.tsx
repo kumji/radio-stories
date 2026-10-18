@@ -15,6 +15,7 @@ export function StoryForm() {
   const [status, setStatus] = useState<Status>('editing')
   const [error, setError] = useState(false)
   const [overLimit, setOverLimit] = useState(false)
+  const [couponCode, setCouponCode] = useState('')
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
@@ -71,7 +72,8 @@ export function StoryForm() {
     setStatus('submitting')
     setError(false)
     try {
-      await submitStory(clampChars(text))
+      const code = await submitStory(clampChars(text))
+      setCouponCode(code)
       clearDraft()
       setText('')
       setStatus('done')
@@ -106,7 +108,7 @@ export function StoryForm() {
       </h2>
 
       {status === 'done' ? (
-        <SuccessView onReset={handleReset} />
+        <SuccessView couponCode={couponCode} onReset={handleReset} />
       ) : (
         <>
           <p className="mt-4 rounded-2xl bg-love-soft/70 px-4 py-3 text-[0.95rem] leading-relaxed">

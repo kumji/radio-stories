@@ -1,6 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // 사연: 생성은 필드·길이 검증. 읽기는 관리자메뉴(화면 비밀번호)용으로 열어 둠. 수정·삭제 불가.
     match /stories/{id} {
       allow create: if request.resource.data.keys().hasOnly(['content', 'createdAt', 'length'])
                     && request.resource.data.content is string
@@ -8,8 +9,22 @@ service cloud.firestore {
                     && request.resource.data.content.size() <= 600
                     && request.resource.data.length is int
                     && request.resource.data.createdAt == request.time;
-      allow read, update, delete: if false;
+      allow read: if true;
+      allow update, delete: if false;
     }
+
+    // 선물 교환권: 문서 ID = 쿠폰번호. 사연과 연결되는 정보는 저장하지 않음.
+    // 이미 있는 번호로는 생성 불가(덮어쓰기 = update로 검증). 사용 처리는 used/usedAt만 변경 가능.
+    match /coupons/{code} {
+      allow create: if code.matches('^[A-Z2-9]{6}$')
+                    && request.resource.data.keys().hasOnly(['used'])
+                    && request.resource.data.used == false;
+      allow read: if true;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['used', 'usedAt'])
+                    && request.resource.data.used is bool;
+      allow delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
