@@ -99,7 +99,7 @@ function AdminTabs() {
   const [tab, setTab] = useState<Tab>('stories')
   const tabs: { id: Tab; label: string }[] = [
     { id: 'stories', label: '📮 사연 모아보기' },
-    { id: 'coupons', label: '🎁 쿠폰 사용확인' },
+    { id: 'coupons', label: '☕ 쿠폰 사용확인' },
   ]
 
   return (
