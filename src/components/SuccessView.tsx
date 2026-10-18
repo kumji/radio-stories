@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Heart, Sparkle } from './Decor'
+import { GiftVoucher } from './GiftVoucher'
 
 const FLOATING = [
   { left: '18%', delay: '0s', size: 'h-6 w-6' },
@@ -32,6 +33,8 @@ export function SuccessView({ onReset }: { onReset: () => void }) {
       </h2>
       <p className="mt-3">소중한 이야기 들려주셔서 감사합니다.</p>
       <p className="mt-6 font-title text-xl text-love">LET'S GO TOGETHER</p>
+
+      <GiftVoucher />
 
       <button
         type="button"
